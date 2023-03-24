@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm") version "1.8.0"
 }
 
-//iHub扩展属性暂时不支持kotlin配置
-//iHubGitHooks {
-//    hooks = mapOf("pre-commit" to "./gradlew build", "commit-msg" to "./gradlew commitCheck")
-//}
+iHubGitHooks {
+    hooks = mapOf("pre-commit" to "./gradlew build", "commit-msg" to "./gradlew commitCheck")
+}
