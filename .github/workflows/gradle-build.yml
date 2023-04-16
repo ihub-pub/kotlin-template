@@ -1,0 +1,39 @@
+name: Build
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up JDK 17
+        uses: actions/setup-java@main
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: Build with Gradle
+        run: gradle build
+
+  dependency-review:
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+    name: Dependency Review Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@main
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@main
+
+  validation:
+    name: Validate Gradle Wrapper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: gradle/wrapper-validation-action@main
